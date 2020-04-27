@@ -4,6 +4,6 @@ import App from './App';
 import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
-    <BrowserRouter basename='/react-material-boilerplate'>
+    <BrowserRouter basename='/covid-tracker'>
         <App />
     </BrowserRouter>, document.getElementById('root'));

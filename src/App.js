@@ -1,17 +1,35 @@
-import React from 'react';
-import { reusableFunction } from 'utils/common'
-import { AppHeader, AppFooter } from 'components';
-import { Container } from '@material-ui/core'
-import AppRenderRoutes from 'global/AppRenderRoutes.module';
-import 'global/global.css';
+import React, {useEffect, useState} from 'react';
+import { AppFooter } from 'components';
+import { Container, Typography } from '@material-ui/core';
+import { Cards, Chart, CountryPicker } from 'components'
+import { fetchData } from 'api'
 
 function App() {
-  reusableFunction()
+  
+  const [appData, setAppData] = useState({
+    data: {},
+    country: ''
+  })
+
+  useEffect(() => {
+    (async () => {
+      setAppData({data: await fetchData()})
+    })()
+  }, []);
+
+  const handleCountryChange = async (country) => {
+    const fetchedData = await fetchData(country);
+    setAppData({data: fetchedData, country: country})
+  }
+
+
   return (
     <div className="App">
-      <AppHeader />
-      <Container style={{ marginBottom: '2em' }}>
-        <AppRenderRoutes />
+      <Container>
+      <Typography style={{textAlign: "center", margin: "1em 0"}} variant="h4" component="h1">Covid-19 Tracker</Typography>
+        <Cards {...appData} />
+        <CountryPicker handleCountryChange={handleCountryChange} />
+        <Chart  {...appData}/>
       </Container>
       <AppFooter />
     </div>
